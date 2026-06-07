@@ -1,0 +1,7 @@
+This mod lets you make simple NPC houses with the new "NPC Housing Wand" item. 
+This mod was mainly meant for me to use and to get into terraria modding but I figured I would publish it and let others use it as well.
+The item costs 50 wood which is around the amount of wood it would've costed to make the room by hand. It can be crafted at a work bench.
+
+Currently, the houses have a perimeter of 5 (L) and 12 (H) because this is how I make them. But if this mod ever takes off and people want more customization I am open to that.
+
+

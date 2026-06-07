@@ -1,0 +1,3 @@
+displayName = Easy NPC Housing
+author = Illuym, Shadow
+version = 0.1

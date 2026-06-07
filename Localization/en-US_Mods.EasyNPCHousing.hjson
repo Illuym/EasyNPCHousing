@@ -1,0 +1,14 @@
+# This file will automatically update with entries for new content after a build and reload.
+# Please read https://github.com/tModLoader/tModLoader/wiki/Localization to learn more about localization and these files.
+
+Items: {
+	EasyNPCHousingWand: {
+		DisplayName: Easy NPC Housing Wand
+		Tooltip:
+			'''
+			Build an NPC house on demand. 
+			House is 5 (Length) by 12 (Height)
+			Cursor palcement is the bottom left corner of the house
+			'''
+	}
+}
