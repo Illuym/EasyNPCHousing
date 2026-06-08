@@ -43,7 +43,7 @@ namespace EasyNPCHousing.Content.Items
 
         /// <summary>
         /// When the item is used, call <see cref="EasyNPCHousingBuilder.BuildNPCHouse(int, int)"/> 
-        /// to build the house where the moust is currently hovering
+        /// to build the house where the mouse is currently hovering
         /// </summary>
         public override bool? UseItem(Player player)
         {
