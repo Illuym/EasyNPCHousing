@@ -42,14 +42,28 @@ namespace EasyNPCHousing.Content.Items
         }
 
         /// <summary>
-        /// When the item is used, call <see cref="EasyNPCHousingBuilder.BuildNPCHouse(int, int)"/> 
-        /// to build the house where the mouse is currently hovering
+        /// When the item is used, determine whehter this is a singleplayer/multiplayer world
+        /// and call to create the house accordingly./> 
         /// </summary>
         public override bool? UseItem(Player player)
         {
+            if(Main.myPlayer != player.whoAmI)
+                   return true;
+            
             Point tilePos = Main.MouseWorld.ToTileCoordinates();
-            EasyNPCHousingBuilder.BuildNPCHouse(tilePos.X, tilePos.Y);
-            return true;
+
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                ModPacket packet = Mod.GetPacket();
+                packet.Write(tilePos.X);
+                packet.Write(tilePos.Y);
+                packet.Send();
+            }
+            else if(Main.netMode == NetmodeID.SinglePlayer)
+            {
+                EasyNPCHousingBuilder.BuildNPCHouse(tilePos.X, tilePos.Y);
+            }             
+            return true;           
         }
     }
 }
