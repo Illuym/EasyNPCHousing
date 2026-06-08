@@ -7,6 +7,10 @@ The item costs 50 wood which is around the amount of wood it would've costed to 
 
 Currently, the houses have a perimeter of 5 (L) and 12 (H) because this is how I make them. But if this mod ever takes off and people want more customization I am open to that.
 
+[h1]Changes[/h1]
+v1.0.1: Added multiplayer support. Houses were not syncing across clients previously, now they are.
+
+
 [h2]Mod Credits[/h2]
 
 Author: Illuym 
