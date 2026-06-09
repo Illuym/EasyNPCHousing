@@ -12,3 +12,14 @@ Items: {
 			'''
 	}
 }
+
+Configs: {
+	EasyNPCHousingConfig: {
+		DisplayName: Easy NPC Housing Config
+
+		ShouldOverwriteBlocks: {
+			Label: Should Overwrite Blocks
+			Tooltip: ""
+		}
+	}
+}
