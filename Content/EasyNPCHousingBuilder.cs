@@ -1,17 +1,22 @@
-﻿using Terraria;
+﻿
+
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 
 namespace EasyNPCHousing.Content
 {
-    public class EasyNPCHousingBuilder
+    public static class EasyNPCHousingBuilder
     {
+        private static int width = 5;
+        private static int height = 12;
         /// <summary>
         /// Starts the process to create an NPC house where the moust is currently hovering
         /// </summary>
         public static void BuildNPCHouse(int originX, int originY)
         {      
-            int width = 5;
-            int height = 12;
+           
             int topY = originY - (height - 1);
            
             BuildFloor(originX, originY, width);

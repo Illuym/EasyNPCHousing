@@ -13,6 +13,9 @@ namespace EasyNPCHousing.Content.Items
         //Default item price of the item (50 wood)
         private int defaultItemPrice = 50;
 
+        private static bool holdingItem =>
+            Main.LocalPlayer.HeldItem.type == ModContent.ItemType<EasyNPCHousingWand>();
+
         /// <summary>
         /// Default properties for the item
         /// </summary>
@@ -48,7 +51,7 @@ namespace EasyNPCHousing.Content.Items
         public override bool? UseItem(Player player)
         {
             if(Main.myPlayer != player.whoAmI)
-                   return true;
+                   return false;
             
             Point tilePos = Main.MouseWorld.ToTileCoordinates();
 
@@ -64,6 +67,18 @@ namespace EasyNPCHousing.Content.Items
                 EasyNPCHousingBuilder.BuildNPCHouse(tilePos.X, tilePos.Y);
             }             
             return true;           
+        }
+
+        public override void HoldItem(Player player)
+        {
+            if (Main.myPlayer != player.whoAmI)
+                return;
+
+            if(holdingItem)
+            {
+                HousePreview.PreviewTilePos = Main.MouseWorld.ToTileCoordinates();
+                HousePreview.DrawPreview = true;
+            }
         }
     }
 }

@@ -21,6 +21,6 @@ namespace EasyNPCHousing.Content
                 EasyNPCHousingBuilder.BuildNPCHouse(x, y);
                 NetMessage.SendTileSquare(-1, x, y, 100);
             }
-        }
+        }     
     }
 }
