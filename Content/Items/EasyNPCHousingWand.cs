@@ -51,7 +51,14 @@ namespace EasyNPCHousing.Content.Items
         public override bool? UseItem(Player player)
         {
             if(Main.myPlayer != player.whoAmI)
-                   return false;
+                   return true;
+
+            if(!ModContent.GetInstance<EasyNPCHousingConfig>().ShouldOverwriteBlocks && !HousePreview.CanBuildHouse)
+            {
+                Main.NewText("You cannot build there. Some blocks will be overwritten. If you wish to be able to overwrite blocks please change this in the config.");
+                Item.stack += 1;
+                return true;
+            }
             
             Point tilePos = Main.MouseWorld.ToTileCoordinates();
 
