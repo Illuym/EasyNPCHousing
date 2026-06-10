@@ -53,9 +53,9 @@ namespace EasyNPCHousing.Content.Items
             if(Main.myPlayer != player.whoAmI)
                    return true;
 
-            if(!ModContent.GetInstance<EasyNPCHousingConfig>().ShouldOverwriteBlocks && !HousePreview.CanBuildHouse)
+            if(!HousingUtilities.CanBuildHouse)
             {
-                Main.NewText("You cannot build there. Some blocks will be overwritten. If you wish to be able to overwrite blocks please change this in the config.");
+                Main.NewText("You cannot build there. Your current configuration does not let you overwrite one or more of the selected blocks");
                 Item.stack += 1;
                 return true;
             }
@@ -83,8 +83,8 @@ namespace EasyNPCHousing.Content.Items
 
             if(holdingItem)
             {
-                HousePreview.PreviewTilePos = Main.MouseWorld.ToTileCoordinates();
-                HousePreview.DrawPreview = true;
+                HousingUtilities.PreviewTilePos = Main.MouseWorld.ToTileCoordinates();
+                HousingUtilities.DrawPreview = true;
             }
         }
     }

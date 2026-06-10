@@ -1,9 +1,7 @@
-﻿
-
-using Microsoft.Xna.Framework;
+﻿using EasyNPCHousing.Content.Helpers;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EasyNPCHousing.Content
 {
@@ -15,8 +13,7 @@ namespace EasyNPCHousing.Content
         /// Starts the process to create an NPC house where the moust is currently hovering
         /// </summary>
         public static void BuildNPCHouse(int originX, int originY)
-        {      
-           
+        {               
             int topY = originY - (height - 1);
            
             BuildFloor(originX, originY, width);
@@ -33,10 +30,11 @@ namespace EasyNPCHousing.Content
         {
             for (int i = 0; i < width; i++)
             {
-                if (i % 2 == 0)
-                    WorldGen.PlaceTile(x + i, y, TileID.WoodBlock);            
-                else               
-                    WorldGen.PlaceTile(x + i, y, TileID.Platforms, style: 0);             
+                ushort tileType = (i % 2 == 0)
+                    ? TileID.WoodBlock
+                    : TileID.Platforms;
+
+                TryPlace(x + i, y, false, tileType);
             }
         }
 
@@ -47,7 +45,7 @@ namespace EasyNPCHousing.Content
         {
             for (int i = 0; i < width; i++)
             {
-                WorldGen.PlaceTile(x + i, topY, TileID.WoodBlock);
+                TryPlace(x + i, topY, false, TileID.WoodBlock);
             }
         }
 
@@ -58,8 +56,8 @@ namespace EasyNPCHousing.Content
         {
             for (int i = 0; i < height; i++)
             {
-                WorldGen.PlaceTile(x, originY - i, TileID.WoodBlock);
-                WorldGen.PlaceTile(x + width - 1, originY - i, TileID.WoodBlock);
+                TryPlace(x, originY - i, false, TileID.WoodBlock);
+                TryPlace(x + width - 1, originY - i, false, TileID.WoodBlock);
             }
         }
 
@@ -82,11 +80,30 @@ namespace EasyNPCHousing.Content
         /// </summary>
         private static void PlaceFurniture(int x, int originY, int topY, int width)
         {
-            WorldGen.PlaceObject(x + 1, originY - 1, TileID.Chairs, style: 0, direction: 1);
-            WorldGen.PlaceObject(x + 2, originY - 1, TileID.WorkBenches, style: 0);
+            TryPlace(x + 1, originY - 1, true, TileID.Chairs);
+            TryPlace(x + 2, originY - 1, true, TileID.WorkBenches);
 
-            WorldGen.PlaceObject(x + 1, topY + 1, TileID.Torches, style: 0);
-            WorldGen.PlaceObject(x + width - 2, topY + 1, TileID.Torches, style: 0);
+            TryPlace(x + 1, topY + 1, true, TileID.Torches);
+            TryPlace(x + width - 2, topY + 1, true, TileID.Torches);
+        }
+
+        /// <summary>
+        /// Attempts to kill (if there is one) and place a tile at the designated spot in the world
+        /// </summary>
+        private static bool TryPlace(int x, int y, bool isObject, ushort type)
+        {
+            var config = ModContent.GetInstance<EasyNPCHousingConfig>();
+            Tile tile = Main.tile[x, y];
+
+            if (tile.HasTile && !TileHelpers.IsTileAllowed(tile, config))
+                return false;
+
+            if(tile.HasTile)
+                WorldGen.KillTile(x, y);
+
+            return isObject
+                ? WorldGen.PlaceObject(x, y, type, style: 0, direction: 1)
+                : WorldGen.PlaceTile(x, y, type, style: 0);            
         }
     }
 }
