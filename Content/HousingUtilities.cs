@@ -1,4 +1,5 @@
 ﻿using EasyNPCHousing.Content.Items;
+using EasyNPCHousing.Content.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -7,7 +8,10 @@ using Terraria.ModLoader;
 
 namespace EasyNPCHousing.Content
 {
-    public class HousePreview : ModSystem
+    /// <summary>
+    /// Handles various tasks related to the house (drawing tile previews and checking if a house can be built on any given tile.
+    /// </summary>
+    public class HousingUtilities : ModSystem
     {
         public static bool DrawPreview = false;
         public static bool CanBuildHouse = true;
@@ -15,8 +19,6 @@ namespace EasyNPCHousing.Content
 
         private static int width = 5;
         private static int height = 12;
-        private static Color color;
-        private static bool occupied;
 
         public override void PostDrawTiles()
         {
@@ -26,7 +28,9 @@ namespace EasyNPCHousing.Content
             if (Main.LocalPlayer.HeldItem.type != ModContent.ItemType<EasyNPCHousingWand>())
                 return;
 
-            CanBuildHouse = true;
+            var config = ModContent.GetInstance<EasyNPCHousingConfig>();
+
+            CanBuildHouse = CheckIfCanBuildHouse(config);
 
             Main.spriteBatch.Begin(
                     SpriteSortMode.Deferred,
@@ -36,7 +40,16 @@ namespace EasyNPCHousing.Content
                     RasterizerState.CullCounterClockwise,
                     null,
                     Main.GameViewMatrix.TransformationMatrix                                    
-                );                   
+            );
+
+            DrawHousePreview(config);
+           
+            Main.spriteBatch.End();
+            DrawPreview = false;
+        }
+
+        private void DrawHousePreview(EasyNPCHousingConfig config)
+        {
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
@@ -44,10 +57,13 @@ namespace EasyNPCHousing.Content
                     int tileX = PreviewTilePos.X + i;
                     int tileY = PreviewTilePos.Y - j;
 
+                    Tile tile = Main.tile[tileX, tileY];
+
+                    bool canPlaceHere = !tile.HasTile || TileHelpers.IsTileAllowed(tile, config);
+
+                    Color color = !tile.HasTile ? Color.Green : canPlaceHere ? Color.YellowGreen : Color.Red;
+
                     Vector2 screenPos = new Vector2(tileX * 16f, tileY * 16f) - Main.screenPosition;
-                    color = Main.tile[tileX, tileY].HasTile ? Color.Red : Color.Green;
-                    occupied = Main.tile[tileX, tileY].HasTile;
-                    CanBuildHouse &= !occupied;
                     Main.spriteBatch.Draw(
                         TextureAssets.MagicPixel.Value,
                         new Rectangle((int)screenPos.X, (int)screenPos.Y, 16, 16),
@@ -55,8 +71,24 @@ namespace EasyNPCHousing.Content
                     );
                 }
             }
-            Main.spriteBatch.End();
-            DrawPreview = false;
+        }
+
+        private static bool CheckIfCanBuildHouse(EasyNPCHousingConfig config)
+        {
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    int tileX = PreviewTilePos.X + i;
+                    int tileY = PreviewTilePos.Y - j;
+
+                    Tile tile = Main.tile[tileX, tileY];
+
+                    if (!TileHelpers.IsTileAllowed(tile, config))
+                        return false; 
+                }
+            }
+            return true;
         }
     }
 }

@@ -17,9 +17,48 @@ Configs: {
 	EasyNPCHousingConfig: {
 		DisplayName: Easy NPC Housing Config
 
-		ShouldOverwriteBlocks: {
-			Label: Should Overwrite Blocks
-			Tooltip: ""
+		OverwriteMode: {
+			Label: Overwrite Mode
+			Tooltip: Pick an overwrite mode of blocks you are ok with being able to be overwritten.
+		}
+
+		CustomAllowedTiles: {
+			Label: Custom Allowed Tiles
+			Tooltip: Feel free to make a list of blocks that you think can be overwritten. Needs to be the ID value of the block. (Ex: Placed Tin Ore = 166).
+		}
+	}
+
+	OverwriteableBlockGroups: {
+		Tooltip: Different groups of blocks in the game.
+
+		None: {
+			Label: None
+			Tooltip: No blocks can be overwritten.
+		}
+
+		WoodOnly: {
+			Label: Wood Only
+			Tooltip: Only wood blocks can be overwritten.
+		}
+
+		NaturalBlocks: {
+			Label: Natural Blocks
+			Tooltip: Only common natural surface blocks can be overwritten.
+		}
+
+		Everything: {
+			Label: Everything
+			Tooltip: Everything can be overwritten.
+		}
+
+		Custom: {
+			Label: Custom
+			Tooltip: If set to this, your custom set of blocks to be overwritten will be used.
+		}
+
+		WoodAndNaturalBlocks: {
+			Label: Wood And Natural Blocks
+			Tooltip: Wood blocks and common surface blocks can be overwritten.
 		}
 	}
 }
